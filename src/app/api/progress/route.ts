@@ -5,39 +5,38 @@ import { authOptions } from '@/lib/auth'
 
 const prisma = new PrismaClient()
 
-export async function GET() {
+export async function GET(req: Request) {
   try {
     const session = await getServerSession(authOptions)
 
-    if (!session?.user?.email) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+    if (!session?.user) {
+      return NextResponse.json(
+        { error: "Unauthorized" },
+        { status: 401 }
+      )
     }
 
-    const user = await prisma.user.findUnique({
-      where: { email: session.user.email },
-      include: {
-        progress: true,
-        achievements: true,
-      },
+    const user = session.user as { id: string }
+    const progress = await prisma.userProgress.findUnique({
+      where: {
+        userId: user.id
+      }
     })
 
-    if (!user) {
-      return NextResponse.json({ error: 'User not found' }, { status: 404 })
+    if (!progress) {
+      return NextResponse.json(
+        { error: "Progress not found" },
+        { status: 404 }
+      )
     }
 
-    return NextResponse.json({
-      vocabularyWords: user.progress?.vocabularyWords || 0,
-      grammarExercises: user.progress?.grammarExercises || 0,
-      listeningExercises: user.progress?.listeningExercises || 0,
-      speakingExercises: user.progress?.speakingExercises || 0,
-      totalScore: user.progress?.totalScore || 0,
-      streak: user.progress?.streak || 0,
-      level: user.progress?.level || 'Beginner',
-      achievements: user.achievements || [],
-    })
+    return NextResponse.json(progress)
   } catch (error) {
-    console.error('Progress fetch error:', error)
-    return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 })
+    console.error("Error fetching progress:", error)
+    return NextResponse.json(
+      { error: "Error fetching progress" },
+      { status: 500 }
+    )
   }
 }
 

@@ -3,28 +3,29 @@ import Link from 'next/link'
 
 export default function Home() {
   return (
-    <div className="flex flex-col min-h-screen">
+    <div className="min-h-screen">
       {/* Hero Section */}
-      <section className="bg-gradient-to-r from-blue-600 to-indigo-700 text-white">
-        <div className="container mx-auto px-6 py-20">
+      <section className="relative bg-gradient-to-r from-primary-600 to-primary-800 text-white overflow-hidden">
+        <div className="absolute inset-0 bg-grid-white/10 [mask-image:linear-gradient(0deg,white,rgba(255,255,255,0.6))]" />
+        <div className="container mx-auto px-4 py-24 relative">
           <div className="max-w-3xl">
-            <h1 className="text-5xl font-bold mb-6">
+            <h1 className="text-5xl md:text-6xl font-bold mb-6 animate-fade-in">
               Master English with Interactive Learning
             </h1>
-            <p className="text-xl mb-8">
+            <p className="text-xl md:text-2xl mb-8 text-white/90 animate-fade-in">
               Practice vocabulary, grammar, and listening skills with our AI-powered platform.
               Learn at your own pace with personalized exercises.
             </p>
-            <div className="space-x-4">
+            <div className="flex flex-col sm:flex-row gap-4 animate-fade-in">
               <Link
                 href="/auth/signin"
-                className="bg-white text-blue-600 px-6 py-3 rounded-lg font-semibold hover:bg-gray-100 transition"
+                className="btn btn-primary text-lg px-8 py-3"
               >
                 Get Started
               </Link>
               <Link
                 href="/about"
-                className="border border-white px-6 py-3 rounded-lg font-semibold hover:bg-white/10 transition"
+                className="btn btn-secondary text-lg px-8 py-3"
               >
                 Learn More
               </Link>
@@ -34,18 +35,39 @@ export default function Home() {
       </section>
 
       {/* Features Section */}
-      <section className="py-20 bg-white">
-        <div className="container mx-auto px-6">
-          <h2 className="text-3xl font-bold text-center mb-12">Why Choose EnglishYou?</h2>
+      <section className="py-24 bg-white">
+        <div className="container mx-auto px-4">
+          <h2 className="text-4xl font-bold text-center mb-16 text-gray-900">
+            Why Choose EnglishYou?
+          </h2>
           <div className="grid md:grid-cols-3 gap-8">
             {features.map((feature, index) => (
-              <div key={index} className="p-6 rounded-xl bg-gray-50 hover:shadow-lg transition">
-                <div className="text-blue-600 text-2xl mb-4">{feature.icon}</div>
-                <h3 className="text-xl font-semibold mb-2">{feature.title}</h3>
-                <p className="text-gray-600">{feature.description}</p>
+              <div 
+                key={index} 
+                className="card p-8 hover:-translate-y-1"
+              >
+                <div className="text-4xl mb-6">{feature.icon}</div>
+                <h3 className="text-xl font-semibold mb-4 text-primary-600">{feature.title}</h3>
+                <p className="text-gray-600 leading-relaxed">{feature.description}</p>
               </div>
             ))}
           </div>
+        </div>
+      </section>
+
+      {/* CTA Section */}
+      <section className="py-24 bg-gray-50">
+        <div className="container mx-auto px-4 text-center">
+          <h2 className="text-4xl font-bold mb-8 text-gray-900">Ready to Start Your Journey?</h2>
+          <p className="text-xl mb-12 text-gray-600 max-w-2xl mx-auto">
+            Join thousands of learners who have already improved their English skills with EnglishYou.
+          </p>
+          <Link
+            href="/auth/signup"
+            className="btn btn-primary text-lg px-12 py-4"
+          >
+            Start Learning Now
+          </Link>
         </div>
       </section>
     </div>
